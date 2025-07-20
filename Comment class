@@ -1,0 +1,31 @@
+public class Comment {
+    private User user;
+    private String text;
+
+    public Comment(User user, String text) {
+        this.user = user;
+        this.text = text;
+    }
+
+    // Show the comment
+    public void showComment() {
+        System.out.println(user.getName() + ": " + text);
+    }
+}
+
+public class Message {
+    private User sender;
+    private User recipient;
+    private String content;
+
+    public Message(User sender, User recipient, String content) {
+        this.sender = sender;
+        this.recipient = recipient;
+        this.content = content;
+    }
+
+    // Show the message
+    public void showMessage() {
+        System.out.println("From " + sender.getName() + " to " + recipient.getName() + ": " + content);
+    }
+}
