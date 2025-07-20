@@ -1,0 +1,81 @@
+import java.util.ArrayList;
+import java.util.List;
+
+public class User {
+private String username;
+private String password;
+private String name;
+private List<User> friends;
+private List<Post> posts;
+private List<Message> inbox;
+
+public User(String username, String password, String name) {
+this.username = username;
+this.password = password;
+this.name = name;
+this.friends = new ArrayList<>();
+this.posts = new ArrayList<>();
+this.inbox = new ArrayList<>();
+}
+
+// Getters
+public String getUsername() {
+return username;
+}
+
+public String getName() {
+return name;
+}
+
+// Add a friend
+public void addFriend(User user) {
+if (!friends.contains(user)) {
+friends.add(user);
+user.friends.add(this);
+System.out.println("You are now friends with " + user.getName());
+} else {
+System.out.println("You are already friends with " + user.getName());
+}
+}
+
+// Check password
+public boolean checkPassword(String password) {
+return this.password.equals(password);
+}
+
+// Create a post
+public void createPost(String content) {
+Post post = new Post(this, content);
+posts.add(post);
+System.out.println("Post created: " + content);
+}
+
+// Show user's posts
+public void showPosts() {
+if (posts.isEmpty()) {
+System.out.println(name + " has no posts.");
+} else {
+for (Post post : posts) {
+post.showPost();
+}
+}
+}
+
+// Send a private message
+public void sendMessage(User recipient, String content) {
+Message message = new Message(this, recipient, content);
+recipient.inbox.add(message);
+System.out.println("Message sent to " + recipient.getName());
+}
+
+// Show inbox messages
+public void showInbox() {
+if (inbox.isEmpty()) {
+System.out.println("No messages.");
+} else {
+for (Message message : inbox) {
+message.showMessage();
+}
+}
+}
+}
