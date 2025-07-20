@@ -1,0 +1,34 @@
+import java.util.ArrayList;
+import java.util.List;
+
+public class Post {
+    private User author;
+    private String content;
+    private List<Comment> comments;
+
+    public Post(User author, String content) {
+        this.author = author;
+        this.content = content;
+        this.comments = new ArrayList<>();
+    }
+
+    // Add a comment to the post
+    public void addComment(User user, String commentText) {
+        Comment comment = new Comment(user, commentText);
+        comments.add(comment);
+        System.out.println(user.getName() + " commented: " + commentText);
+    }
+
+    // Show the post
+    public void showPost() {
+        System.out.println("Post by " + author.getName() + ": " + content);
+        if (comments.isEmpty()) {
+            System.out.println("No comments.");
+        } else {
+            System.out.println("Comments:");
+            for (Comment comment : comments) {
+                comment.showComment();
+            }
+        }
+    }
+}
