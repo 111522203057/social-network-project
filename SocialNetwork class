@@ -1,0 +1,159 @@
+import java.util.HashMap;
+import java.util.Scanner;
+
+public class SocialNetwork {
+    private HashMap<String, User> users;
+    private User loggedInUser;
+
+    public SocialNetwork() {
+        users = new HashMap<>();
+    }
+
+    // Register a new user
+    public void registerUser(String username, String password, String name) {
+        if (!users.containsKey(username)) {
+            User user = new User(username, password, name);
+            users.put(username, user);
+            System.out.println("User " + name + " registered successfully!");
+        } else {
+            System.out.println("Username already exists.");
+        }
+    }
+
+    // Login a user
+    public void loginUser(String username, String password) {
+        User user = users.get(username);
+        if (user != null && user.checkPassword(password)) {
+            loggedInUser = user;
+            System.out.println("Welcome " + user.getName() + "!");
+        } else {
+            System.out.println("Invalid credentials.");
+        }
+    }
+
+    // Add a friend
+    public void addFriend(String friendUsername) {
+        if (loggedInUser != null) {
+            User friend = users.get(friendUsername);
+            if (friend != null) {
+                loggedInUser.addFriend(friend);
+            } else {
+                System.out.println("User not found.");
+            }
+        } else {
+            System.out.println("You need to be logged in to add friends.");
+        }
+    }
+
+    // Create a post
+    public void createPost(String content) {
+        if (loggedInUser != null) {
+            loggedInUser.createPost(content);
+        } else {
+            System.out.println("You need to be logged in to create a post.");
+        }
+    }
+
+    // Show user posts
+    public void showUserPosts(String username) {
+        User user = users.get(username);
+        if (user != null) {
+            user.showPosts();
+        } else {
+            System.out.println("User not found.");
+        }
+    }
+
+    // Send a private message
+    public void sendMessage(String recipientUsername, String messageContent) {
+        if (loggedInUser != null) {
+            User recipient = users.get(recipientUsername);
+            if (recipient != null) {
+                loggedInUser.sendMessage(recipient, messageContent);
+            } else {
+                System.out.println("Recipient not found.");
+            }
+        } else {
+            System.out.println("You need to be logged in to send messages.");
+        }
+    }
+
+    // Show the logged-in user's inbox
+    public void showInbox() {
+        if (loggedInUser != null) {
+            loggedInUser.showInbox();
+        } else {
+            System.out.println("You need to be logged in to view your inbox.");
+        }
+    }
+
+    public static void main(String[] args) {
+        SocialNetwork network = new SocialNetwork();
+        Scanner scanner = new Scanner(System.in);
+        boolean running = true;
+
+        while (running) {
+            System.out.println("\n1. Register\n2. Login\n3. Add Friend\n4. Create Post\n5. View Posts\n6. Send Message\n7. View Inbox\n8. Logout\n9. Exit");
+            int choice = scanner.nextInt();
+            scanner.nextLine();  // Consume newline
+
+            switch (choice) {
+                case 1:
+                    System.out.println("Enter username: ");
+                    String username = scanner.nextLine();
+                    System.out.println("Enter password: ");
+                    String password = scanner.nextLine();
+                    System.out.println("Enter your name: ");
+                    String name = scanner.nextLine();
+                    network.registerUser(username, password, name);
+                    break;
+
+                case 2:
+                    System.out.println("Enter username: ");
+                    username = scanner.nextLine();
+                    System.out.println("Enter password: ");
+                    password = scanner.nextLine();
+                    network.loginUser(username, password);
+                    break;
+
+                case 3:
+                    System.out.println("Enter friend's username: ");
+                    String friendUsername = scanner.nextLine();
+                    network.addFriend(friendUsername);
+                    break;
+
+                case 4:
+                    System.out.println("Enter post content: ");
+                    String postContent = scanner.nextLine();
+                    network.createPost(postContent);
+                    break;
+
+                case 5:
+                    System.out.println("Enter username to view posts: ");
+                    username = scanner.nextLine();
+                    network.showUserPosts(username);
+                    break;
+
+                case 6:
+                    System.out.println("Enter recipient username: ");
+                    String recipientUsername = scanner.nextLine();
+                    System.out.println("Enter message: ");
+                    String messageContent = scanner.nextLine();
+                    network.sendMessage(recipientUsername, messageContent);
+                    break;
+
+                case 7:
+                    network.showInbox();
+                    break;
+
+                case 8:
+                    network.loggedInUser = null;
+                    System.out.println("Logged out.");
+                    break;
+
+                case 9:
+                    running = false;
+                    break;
+
+                default:
+                    System.out.println("Invalid choice.");
